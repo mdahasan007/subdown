@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b100e">
+  <meta name="description" content="Find and download subtitles from videos with SubDown. Export captions as SRT, VTT or TXT.">
+  <title>SubDown — Video Subtitle Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="nav wrap">
+    <a class="brand" href="/"><span class="brand-mark">S</span>sub<span>down</span></a>
+    <div class="nav-right"><span class="nav-label">FREE SUBTITLE DOWNLOADER</span><button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">◐</button></div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow"><span></span> ONE LINK. ALL YOUR SUBTITLES.</div>
+      <h1>Every word.<br><span>Right on time.</span></h1>
+      <p class="hero-copy">Find subtitles from videos across supported platforms.<br>Pick a language and download in seconds.</p>
+      <form id="inspectForm" class="url-form">
+        <span class="url-icon">↗</span>
+        <input id="videoUrl" type="url" placeholder="Paste your video link here..." required maxlength="2048" aria-label="Video URL">
+        <button id="submitBtn" type="submit"><span>Find subtitles</span> <b>→</b></button>
+      </form>
+      <p class="hint">Supports public video URLs available through yt-dlp. Captions must exist.</p>
+    </section>
+    <div id="loading" class="loading hidden"><div class="spinner"></div><div><strong>Finding available subtitles...</strong><p>This can take a few seconds.</p></div></div>
+    <div id="errorBox" class="error hidden" role="alert"></div>
+    <section id="result" class="result hidden">
+      <div class="video-card">
+        <img id="thumbnail" class="thumb" alt="Video thumbnail">
+        <div class="video-info"><span class="source-pill"><span>●</span><span id="extractor">SOURCE</span></span><h2 id="videoTitle"></h2><p id="videoMeta"></p></div>
+      </div>
+      <div class="tracks-head"><div><h2>Available subtitles</h2><p>Choose a language to continue</p></div><span id="trackCount" class="count">0 TRACKS</span></div>
+      <div class="tabs">
+        <button class="tab active" data-kind="manual">Manual <span id="manualCount">0</span></button>
+        <button class="tab" data-kind="automatic">Auto-generated <span id="autoCount">0</span></button>
+      </div>
+      <div id="languageList" class="language-list"></div>
+      <div id="emptyTracks" class="empty hidden">No tracks in this category. Try the other tab.</div>
+      <div class="download-bar">
+        <div class="selection"><div class="selection-icon">文</div><div><small>SELECTED LANGUAGE</small><strong id="selectedName">Select a language</strong></div></div>
+        <div class="format-select"><label for="format">FORMAT</label><select id="format"><option value="srt">SRT</option><option value="vtt">VTT</option><option value="txt">TXT</option><option value="raw">Original</option></select></div>
+        <button id="downloadBtn" type="button" disabled>Download <span>↓</span></button>
+      </div>
+      <p class="privacy-note">SubDown processes the subtitle request temporarily. No video file is stored.</p>
+    </section>
+    <section class="features">
+      <article class="feature"><div class="feature-icon">◎</div><h3>Many platforms</h3><p>Works with public video links supported by yt-dlp extractors.</p></article>
+      <article class="feature"><div class="feature-icon">文</div><h3>Multiple formats</h3><p>Export subtitles as SRT, VTT, plain text or original format.</p></article>
+      <article class="feature"><div class="feature-icon">⚡</div><h3>Simple & fast</h3><p>No account needed. Paste a link, choose a language and go.</p></article>
+    </section>
+  </main>
+  <footer class="footer wrap"><a class="brand" href="/"><span class="brand-mark">S</span>sub<span>down</span></a><p>Use responsibly. Only access and download captions you have permission to use.</p><span>© <span id="year"></span> SubDown</span></footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>
