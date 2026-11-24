@@ -1,5 +1,5 @@
 FROM python:3.12-slim
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 DENO_DIR=/opt/deno-cache
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 DENO_DIR=/opt/deno-cache YTDL_POT_PROVIDER_URL=http://127.0.0.1:4416
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl git unzip ffmpeg \
     && curl -fsSL https://deno.land/install.sh | sh \
