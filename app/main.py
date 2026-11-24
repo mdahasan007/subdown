@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import ipaddress
+import logging
 import os
 import re
 import socket
@@ -18,6 +19,8 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from starlette.background import BackgroundTask
+
+logger = logging.getLogger('subdown')
 
 APP_DIR = Path(__file__).resolve().parent
 STATIC_DIR = APP_DIR / "static"
@@ -193,7 +196,17 @@ async def inspect(payload: InspectRequest, request: Request):
     except asyncio.TimeoutError:
         raise HTTPException(504, "Subtitle detection timed out. Try again later.")
     except Exception as exc:
-        raise HTTPException(422, "Could not read this video. Check the link or try another supported source.") from exc
+        logger.exception("Subtitle inspection failed for URL host %s", urlparse(url).hostname)
+        message = str(exc).lower()
+        if "sign in to confirm" in message or "not a bot" in message or "http error 403" in message:
+            detail = "YouTube is blocking requests from this server right now. Please try again later."
+        elif "javascript runtime" in message or "challenge solving" in message or "ejs" in message:
+            detail = "YouTube verification setup is incomplete on the server. Please contact the site administrator."
+        elif "private video" in message or "members-only" in message or "age" in message:
+            detail = "This video requires access that SubDown cannot use. Try a public video."
+        else:
+            detail = "Could not read this video. The server log contains the technical error."
+        raise HTTPException(422, detail) from exc
 
 def cleanup_dir(path: Path):
     try:
