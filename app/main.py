@@ -88,6 +88,7 @@ def ydl_options(extra: dict | None = None) -> dict:
         "quiet": True, "no_warnings": True, "skip_download": True,
         "noplaylist": True, "socket_timeout": 15, "retries": 1,
         "extractor_retries": 1, "cachedir": False,
+        "extractor_args": {"youtubepot-bgutilhttp": {"base_url": "http://127.0.0.1:4416"}},
     }
     if extra:
         opts.update(extra)
