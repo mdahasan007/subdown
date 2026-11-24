@@ -71,6 +71,10 @@ Returns title, duration, uploader, thumbnail, manual subtitle tracks and automat
 
 Health check.
 
+## YouTube extraction support
+
+The Docker image includes Deno, yt-dlp's JavaScript challenge components, and the community-maintained BgUtils PO Token provider plugin plus its local HTTP provider. The provider runs inside the same container on localhost:4416; the FastAPI service uses it automatically. This can improve YouTube compatibility when PO-token challenges are the cause, but **does not guarantee** access when YouTube blocks the hosting IP, rate-limits requests, or changes its checks. The provider is third-party software and is not affiliated with YouTube or yt-dlp. Never add browser cookies or account credentials to a public subtitle service.
+
 ## Platform coverage
 
 yt-dlp supports a large and changing set of extractors. Actual caption availability depends on the source platform, the individual video, account/region restrictions, and the extractor version. A supported video URL does not guarantee subtitles exist. Some services require authentication or do not expose captions to anonymous requests. This project intentionally does not bypass DRM, paywalls, access controls, or private-video restrictions.
