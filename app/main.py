@@ -21,6 +21,7 @@ from pydantic import BaseModel, Field
 from starlette.background import BackgroundTask
 
 logger = logging.getLogger('subdown')
+logger.setLevel(logging.DEBUG)
 
 APP_DIR = Path(__file__).resolve().parent
 STATIC_DIR = APP_DIR / "static"
@@ -90,10 +91,17 @@ def ydl_options(extra: dict | None = None) -> dict:
         "extractor_retries": 1, "cachedir": False,
     }
     provider_url = os.getenv("YTDL_POT_PROVIDER_URL", "").strip()
+    extractor_args = {
+        # Prefer clients that can reach the PO-token flow on current YouTube
+        # deployments; this is a compatibility setting, not an access bypass.
+        "youtube": {"player_client": ["mweb", "tv", "web_safari"]},
+    }
     if provider_url:
-        opts["extractor_args"] = {
-            "youtubepot-bgutilhttp": {"base_url": provider_url}
-        }
+        extractor_args["youtubepot-bgutilhttp"] = {"base_url": provider_url}
+    opts["extractor_args"] = extractor_args
+    # Surface yt-dlp's provider/token diagnostics in Render Runtime Logs.
+    opts["verbose"] = True
+    opts["logger"] = logger
     if extra:
         opts.update(extra)
     return opts
